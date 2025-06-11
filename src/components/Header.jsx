@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import useSticky from "../modules/UseSticky";
 import styled from "styled-components";
+import { BsCartFill } from "react-icons/bs";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -20,7 +21,8 @@ const Navbar = styled.div`
     align-items: center;
     flex-direction: row;
     background-color:rgb(32, 32, 32);
-    transition: all 0.3s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    
     &.sticky {
         position: fixed;
         top: 0;
@@ -72,10 +74,10 @@ const Navbtns = styled.ul`
     `;
 
 const Search = styled.div`
-    display: flex;
+    display: none;
     position: absolute;
-    margin-right: 20px;
-    right: 0;
+    margin-left: 20px;
+    left: 0;
     input {
         padding: 5px;
         border: 1px solid #ccc;
@@ -98,6 +100,13 @@ const Search = styled.div`
         }
     }
 `;  
+
+const CartBtn = styled.div`
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    &.sticky {
+`;
 
 const Header = () => {
     const { stickyRef, sticky } = useSticky();
@@ -128,6 +137,11 @@ const Header = () => {
                     <input type="text" placeholder="Search..." />
                     
                 </Search>
+                <CartBtn>
+                    <Link to="/cart">
+                        <BsCartFill size={36} color="white" />
+                    </Link>
+                </CartBtn>
             </Navbar>
         </Wrapper>
     )

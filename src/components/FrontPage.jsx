@@ -1,14 +1,11 @@
-
-
+import CarouselComponent from "../modules/Carousel";
 import styled from "styled-components";
 
-const FrontPage = () => {
-    const Wrapper = styled.div`
+const Wrapper = styled.div`
         width: 100%;
         height: 200vh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
         background-color: #f0f0f0;
     `;
@@ -22,11 +19,54 @@ const FrontPage = () => {
         font-size: 24px;
         color: #666;
     `;
+
+    const CarouselContainer = styled.div`
+        width: 100%;
+        
+        margin-bottom: 2rem;
+    `;
+
+    const image = styled.div`
+        width: 100%;
+        height: 100%;
+        display: flex;
+        background: grey;
+        
+        &:before {
+        content: "PLACEHOLDER";
+        color: black;
+        }
+        `
+
+    const CarouselItems = [
+        {
+            title: "Product 1",
+            description: "bleep bloop",
+            image: "https://picsum.photos/300/200?random=1"
+        },
+        {
+            title: "Product 2",
+            description: "bleep bloop",
+            image: "https://picsum.photos/300/200?random=2"
+        },
+        {
+            title: "Product 3",
+            description: "bleep bloop",
+            image: "https://picsum.photos/300/200?random=3"
+        }
+    ];
+
+const FrontPage = () => {
+    
     
     return (
         <Wrapper>
-        <Title>Welcome to Our Shopping Cart</Title>
-        <Subtitle>Find the best deals here!</Subtitle>
+            <CarouselContainer>
+                <CarouselComponent items={CarouselItems} onItemClick={(item) => console.log(item)} />
+            </CarouselContainer>
+            
+            <Title> This is a future title</Title>
+            <Subtitle>Find something or other here</Subtitle>
         </Wrapper>
     );
 }
