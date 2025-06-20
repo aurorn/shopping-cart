@@ -26,7 +26,7 @@ const Wrapper = styled.div`
         margin-bottom: 2rem;
     `;
 
-    const image = styled.div`
+    /*const image = styled.div`
         width: 100%;
         height: 100%;
         display: flex;
@@ -36,7 +36,7 @@ const Wrapper = styled.div`
         content: "PLACEHOLDER";
         color: black;
         }
-        `
+        `*/
 
     const CarouselItems = [
         {

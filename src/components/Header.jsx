@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import useSticky from "../modules/UseSticky";
 import styled from "styled-components";
 import { BsCartFill } from "react-icons/bs";
+import title from "../assets/Aurornisgames.png";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -36,17 +37,19 @@ const Title = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: black;
-    
-    h1 {
-        font-size: 36px;
-        margin: 10px 0 5px 0;
-        letter-spacing: 5px;
+    height: 96px;
+    img {
+        width: 160px;
+        height: auto;
+        margin: 0 20px;
     }
-    h2 {
-        font-size: 24px;
-        margin: 0 0 10px 0;
-        letter-spacing: 10px;
+    
+
+
+    & img:hover {
+        scale: 1.1;
+        transition: 0.1s ease-in-out;
+        
     }
     `;
 
@@ -118,8 +121,7 @@ const Header = () => {
                 </div>
 
                 <Title>
-                    <h1>Aurornis</h1>
-                    <h2>Games</h2>
+                    <img src={title} alt="Aurornis Games Logo" />
                 </Title>
 
                 <div className="cart btn">
