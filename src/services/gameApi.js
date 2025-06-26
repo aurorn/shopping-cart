@@ -5,7 +5,7 @@ export const gameApi = {
     async getFeaturedGames() {
         try {
             const response = await fetch(
-                `${BASE_URL}/games?key=${API_KEY}&ordering=-rating&page_size=10`
+                `${BASE_URL}/games?key=${API_KEY}&ordering=-metacritic&page_size=10`
             );
             if(!response.ok) {
                 throw new Error('Network Response Error');
@@ -18,10 +18,10 @@ export const gameApi = {
         }
     },
 
-    async getGamesByGenre(genre) {
+    async getGamesByGenre() {
         try {
             const response = await fetch(
-                `${BASE_URL}/games?key=${API_KEY}&genres=${genre}&page_size=20`
+                `${BASE_URL}/genres?key=${API_KEY}&ordering&page_size=4`
             );
             if (!response.ok) {
                 throw new Error('Network Response Error');

@@ -87,6 +87,20 @@ const Wrapper = styled.div`
         border-radius: 5px;
         position: relative;
         overflow: hidden;
+
+        p {
+        opacity: 0;
+        transition: opacity: 0.3;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background: rgba(0,0,0,0.7);
+        padding: 10px 0;
+        margin: 0;
+        pointer-events: none;
+        }
         
 
         &:hover {
@@ -118,6 +132,9 @@ const Wrapper = styled.div`
                 -webkit-mask-composite: xor;
                 mask-composite: exclude;
                 pointer-events: none;
+            }
+                p {
+                opacity: 1;
             }   
         }
 
@@ -221,10 +238,12 @@ const Wrapper = styled.div`
 
 const FrontPage = () => {
     const [featuredGames, setFeaturedGames] = useState([]);
+    const [genreList, setGenreList] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
 
-    useEffect(() => {
+useEffect(() => {
     const fetchFeaturedGames = async () => {
         try {
             const games = await gameApi.getFeaturedGames();
@@ -238,7 +257,21 @@ const FrontPage = () => {
         }
     };
 
+    const fetchGenreList = async () => {
+        try {
+            const genres = await gameApi.getGamesByGenre();
+            setGenreList(Array.isArray(genres) ? genres : []);
+        } catch (err) {
+            setError('Failed to Fetch Genres');
+            setGenreList([]);
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     fetchFeaturedGames();
+    fetchGenreList();
 }, []);
 
 const ShowcaseItemContent = ({ game }) => (
@@ -248,6 +281,14 @@ const ShowcaseItemContent = ({ game }) => (
             
         />
         
+    </div>
+)
+
+const ShowcaseGenreItem = ({ genre }) => (
+    <div>
+        <ShowcaseImg src={genre.image_background}
+            alt={genre.name}
+            />
     </div>
 )
     
@@ -269,10 +310,18 @@ const ShowcaseItemContent = ({ game }) => (
                     </SectionTopbar>
                     
                     <GenreList>
-                        <Genre>Action</Genre>
+                        {loading && <div>Loading...</div>}
+                        {error && <div>{error}</div>}
+                        {Array.isArray(genreList) && genreList.map((genres) => (
+                            <Genre key={genres.id}>
+                                <ShowcaseGenreItem genre={genres}/>
+                                <p>{genres.name}</p>
+                            </Genre>
+                        ))}
+                        {/*<Genre>Action</Genre>
                         <Genre>RPG</Genre>
                         <Genre>Couch Co-op</Genre>
-                        <Genre>MMO</Genre>
+                        <Genre>MMO</Genre>*/}
                     </GenreList>
                 </GenreWrapper>
                 <ShowcaseWrapper>
