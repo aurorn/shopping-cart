@@ -1,10 +1,12 @@
 import CarouselComponent from "../modules/Carousel";
 import styled from "styled-components";
-import { createGlobalStyle } from "styled-components";
+import { useState, useEffect } from 'react';
+import { gameApi } from '../services/gameApi';
+import Footer from './Footer';
 
 const Wrapper = styled.div`
         width: 100%;
-        height: 200vh;
+        height: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -13,7 +15,8 @@ const Wrapper = styled.div`
     
     const Title = styled.h1`
         font-size: 48px;
-        color: #333;
+        color: white;
+        
     `;
     
     const Subtitle = styled.h2`
@@ -27,17 +30,6 @@ const Wrapper = styled.div`
         margin-bottom: 2rem;
     `;
 
-    /*const image = styled.div`
-        width: 100%;
-        height: 100%;
-        display: flex;
-        background: grey;
-        
-        &:before {
-        content: "PLACEHOLDER";
-        color: black;
-        }
-        `*/
 
     const CarouselItems = [
         {
@@ -62,7 +54,7 @@ const Wrapper = styled.div`
         height: auto;
         display: flex;
         flex-direction: column;
-        alighn-items: center;
+        align-items: center;
         justify-content: center;
         margin: 0 auto;
         `;
@@ -72,8 +64,9 @@ const Wrapper = styled.div`
         height: auto;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;`
+        
+        justify-content: center;
+        text-align: left:`
 
     const GenreList = styled.div`
         width: 100%;
@@ -84,65 +77,58 @@ const Wrapper = styled.div`
         flex-wrap: wrap;`
 
     const Genre = styled.div`
-    width: 200px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #444;
-    color: white;
-    border-radius: 5px;
-    position: relative;
-    overflow: hidden;
-
-    &:hover {
-        transform: scale(1.1);            
-        transition: 0.3s ease-in-out;
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            padding: 2px; // This controls border thickness
-            border-radius: 5px;
-            background: linear-gradient(
-                60deg,
-                hsl(224, 85%, 66%),
-                hsl(269, 85%, 66%),
-                hsl(314, 85%, 66%),
-                hsl(359, 85%, 66%),
-                hsl(44, 85%, 66%),
-                hsl(89, 85%, 66%),
-                hsl(134, 85%, 66%),
-                hsl(179, 85%, 66%)
-            );
-            background-size: 300% 300%;
-            background-position: 0 50%;
-            animation: moveGradient 4s alternate infinite;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }   
-    }
+        width: 200px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #444;
+        color: white;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
         
-    
 
-    
-`
+        &:hover {
+            transform: scale(1.1);            
+            transition: 0.3s ease-in-out;
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                padding: 2px;
+                border-radius: 5px;
+                background: linear-gradient(
+                    60deg,
+                    hsl(224, 85%, 66%),
+                    hsl(269, 85%, 66%),
+                    hsl(314, 85%, 66%),
+                    hsl(359, 85%, 66%),
+                    hsl(44, 85%, 66%),
+                    hsl(89, 85%, 66%),
+                    hsl(134, 85%, 66%),
+                    hsl(179, 85%, 66%)
+                );
+                background-size: 300% 300%;
+                background-position: 0 50%;
+                animation: moveGradient 4s alternate infinite;
+                -webkit-mask: 
+                    linear-gradient(#fff 0 0) content-box, 
+                    linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+            }   
+        }
 
-    // Keyframes must be outside the styled component template literal
-    
-    const BorderGradient = createGlobalStyle`
-        @keyframes moveGradient {
+            @keyframes moveGradient {
             50% {
-                background-position: 100% 50%;
+            background-position: 100% 50%;
             }
         }
-    `;
-            
-
+    
+`
+    
     const ShowcaseWrapper = styled.div`
         width: 100%;
         height: auto;
@@ -157,52 +143,113 @@ const Wrapper = styled.div`
         flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
-        flex-wrap: wrap;`
+        flex-wrap: wrap;
+        row-gap: 40px;
+        column-gap: 100px;`
 
-    const ShowcaseItem = styled.div`
+
+    const ShowcaseImg = styled.img`
+        display: flex;
+        justify-content: center;
         width: 200px;
-        height: 150px;
+        height: 200px;
+        object-fit: cover;
+        `
+    const ShowcaseItem = styled.div`
+        
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: #444;
         color: white;
-        border-radius: 5px;
-        border: 1px solid rgb(99, 95, 95);
+        border-radius: 3px;
+        border-color: #444;
         
+        p {
+        opacity: 0;
+        transition: opacity: 0.3;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        background: rgba(0,0,0,0.7);
+        padding: 10px 0;
+        margin: 0;
+        pointer-events: none;
+        }
+         
         &:hover {
         transform: scale(1.1);            
         transition: 0.3s ease-in-out;
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            padding: 2px; // This controls border thickness
-            border-radius: 5px;
-            background: linear-gradient(
-                60deg,
-                hsl(224, 85%, 66%),
-                hsl(269, 85%, 66%),
-                hsl(314, 85%, 66%),
-                hsl(359, 85%, 66%),
-                hsl(44, 85%, 66%),
-                hsl(89, 85%, 66%),
-                hsl(134, 85%, 66%),
-                hsl(179, 85%, 66%)
-            );
-            background-size: 300% 300%;
-            background-position: 0 50%;
-            animation: moveGradient 4s alternate infinite;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }   
+        
+            p {
+                opacity: 1;
+            }
+
+        
     }`
 
+    const SectionTopbar = styled.div`
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    `
+
+    const BrowseButton = styled.button`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        width: 100px;
+        background-color: rgb(43, 43, 43);
+        border: 1px solid rgb(0,0,0);
+        color: rgb(197, 197, 197);
+
+        &:hover {
+            background-color: rgb(95, 95, 95);
+            color: rgb(216, 213, 213);
+            border-color: rgb(255, 255, 255);
+            cursor: pointer;
+        
+        }
+    `
+
+    
+    
+
 const FrontPage = () => {
+    const [featuredGames, setFeaturedGames] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+    const fetchFeaturedGames = async () => {
+        try {
+            const games = await gameApi.getFeaturedGames();
+            setFeaturedGames(Array.isArray(games) ? games : []);
+        } catch (err) {
+            setError('Failed to fetch games');
+            setFeaturedGames([]);
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchFeaturedGames();
+}, []);
+
+const ShowcaseItemContent = ({ game }) => (
+    <div> 
+        <ShowcaseImg src={game.background_image} 
+            alt={game.name} 
+            
+        />
+        
+    </div>
+)
     
     
     return (
@@ -216,7 +263,11 @@ const FrontPage = () => {
 
             <MiddleWrapper>
                 <GenreWrapper>
-                    <Title>Popular Genres</Title>
+                    <SectionTopbar>
+                        <Title>Popular Genres</Title>
+                        <BrowseButton>Browse More</BrowseButton>
+                    </SectionTopbar>
+                    
                     <GenreList>
                         <Genre>Action</Genre>
                         <Genre>RPG</Genre>
@@ -225,18 +276,25 @@ const FrontPage = () => {
                     </GenreList>
                 </GenreWrapper>
                 <ShowcaseWrapper>
-                    <Title>Featured Games</Title>
+                    <SectionTopbar>
+                        <Title>Featured Games</Title>
+                        <BrowseButton>Browse More</BrowseButton>
+                    </SectionTopbar>
                     <ShowcaseList>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
-                        <ShowcaseItem>Get Game from API</ShowcaseItem>
+                        {loading && <div>Loading...</div>}
+                        {error && <div>{error}</div>}
+                        {Array.isArray(featuredGames) && featuredGames.map((game) => (
+                            <ShowcaseItem key={game.id}>
+                                <ShowcaseItemContent game={game} />
+                                <p>{game.name}</p>
+                            </ShowcaseItem>
+                        ))}
                     </ShowcaseList>
                 </ShowcaseWrapper>
             </MiddleWrapper>
+            <Footer/>
         </Wrapper>
+        
     );
 }
 
