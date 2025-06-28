@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useState, useEffect } from 'react';
 import { gameApi } from '../services/gameApi';
 import Footer from './Footer';
+import { removeDupes } from "../utilities/removeDupes";
 
 const Wrapper = styled.div`
         width: 100%;
@@ -237,27 +238,14 @@ const Wrapper = styled.div`
     
 
 const FrontPage = () => {
-    const [featuredGames, setFeaturedGames] = useState([]);
     const [genreList, setGenreList] = useState([])
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [trendingGames, setTrendingGames] = useState([]);
     
 
 useEffect(() => {
-    const fetchFeaturedGames = async () => {
-        try {
-            const games = await gameApi.getFeaturedGames();
-            setFeaturedGames(Array.isArray(games) ? games : []);
-        } catch (err) {
-            setError('Failed to fetch games');
-            setFeaturedGames([]);
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchGenreList = async () => {
+        const fetchGenreList = async () => {
         try {
             const genres = await gameApi.getGamesByGenre();
             setGenreList(Array.isArray(genres) ? genres : []);
@@ -270,7 +258,21 @@ useEffect(() => {
         }
     };
 
-    fetchFeaturedGames();
+    const fetchTrending = async () => {
+        try {
+            const games = await gameApi.getNewAndTrendingGames();
+            const uniqueGames = removeDupes(Array.isArray(games) ? games : []);
+            setTrendingGames(uniqueGames);
+        } catch (err) {
+            setError('Failed to Fetch Genres');
+            setGenreList([]);
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchTrending();
     fetchGenreList();
 }, []);
 
@@ -318,25 +320,21 @@ const ShowcaseGenreItem = ({ genre }) => (
                                 <p>{genres.name}</p>
                             </Genre>
                         ))}
-                        {/*<Genre>Action</Genre>
-                        <Genre>RPG</Genre>
-                        <Genre>Couch Co-op</Genre>
-                        <Genre>MMO</Genre>*/}
                     </GenreList>
                 </GenreWrapper>
                 <ShowcaseWrapper>
                     <SectionTopbar>
-                        <Title>Featured Games</Title>
+                        <Title>New and Trending</Title>
                         <BrowseButton>Browse More</BrowseButton>
                     </SectionTopbar>
                     <ShowcaseList>
                         {loading && <div>Loading...</div>}
                         {error && <div>{error}</div>}
-                        {Array.isArray(featuredGames) && featuredGames.map((game) => (
-                            <ShowcaseItem key={game.id}>
-                                <ShowcaseItemContent game={game} />
-                                <p>{game.name}</p>
-                            </ShowcaseItem>
+                        {Array.isArray(trendingGames) && trendingGames.map((game) => (
+                    <ShowcaseItem key={game.id}>
+                        <ShowcaseItemContent game={game} />
+                        <p>{game.name}</p>
+                    </ShowcaseItem>
                         ))}
                     </ShowcaseList>
                 </ShowcaseWrapper>
