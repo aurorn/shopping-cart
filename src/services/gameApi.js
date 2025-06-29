@@ -21,7 +21,7 @@ export const gameApi = {
     async getNewAndTrendingGames() {
         try {
             const response = await fetch(
-                `${BASE_URL}/games/lists/main?key=${API_KEY}&discover=true&ordering=-added&page_size=40`
+                `${BASE_URL}/games/lists/main?key=${API_KEY}&discover=true&ordering=-added&page_size=16`
             );
             if (!response.ok) {
                 throw new Error('Network Response Error');
@@ -30,6 +30,38 @@ export const gameApi = {
             return data.results;
         } catch (error) {
             console.error('Error fetching new and trending games:', error);
+            throw error;
+        }
+    },
+
+    async getLatestPopularGames() {
+        try {
+            const response = await fetch(
+                `${BASE_URL}/games/lists/main?key=${API_KEY}&discover=true&ordering=-added&page_size=4`
+            );
+             if (!response.ok) {
+                throw new Error('Network Response Error');
+             }
+             const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Error fetching new and trending games:', error);
+            throw error;
+        }
+    },
+
+    async getGameDetails(id) {
+        try {
+            const response = await fetch(
+                `${BASE_URL}/games/${id}?key=${API_KEY}`
+            );
+            if (!response.ok) {
+                throw new Error('Network Response Error');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching game details:', error);
             throw error;
         }
     },

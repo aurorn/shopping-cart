@@ -6,18 +6,21 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 const CarouselWrapper = styled.div`
   position: relative;
   width: 100%;
-  max-width: 100svw;
-  height: 600px;
+  height: 700px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  user-select: none;
 `;
 
 const CarouselSlide = styled.div`
-  width: 100%;
+  width: 70%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  background-color: grey;
 
   img {
     width: 100%;
@@ -28,46 +31,39 @@ const CarouselSlide = styled.div`
   &::after {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(0, 0, 0, 0.5) 51%,
-      rgba(0, 0, 0, 0.65) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    height: 30%;
+    background-color: rgba(34, 34, 34, 0.62);
+    
+    
+    filter: drop-shadow(0px -10px 10px rgba(0, 0, 0, 0.56));
   }
 
-  &:hover::after {
-    opacity: 1;
-  }
 `;
 
 const CarouselContent = styled.div`
   position: absolute;
-  top: 50%;
+  bottom: 0;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
   padding: 20px;
   color: white;
   text-align: center;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
+  
+
   z-index: 2;
 
   h3 {
     margin: 0 0 10px 0;
-    font-size: 1.5rem;
+    font-size: 30px;
   }
 
   p {
     margin: 0;
-    font-size: 1rem;
+    font-size: 15px;
   }
 
   ${CarouselSlide}:hover & {
@@ -75,21 +71,32 @@ const CarouselContent = styled.div`
   }
 `;
 
-const Arrow = styled.div`position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+const ArrowWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    height: 100%;
+    width: 70px;
+    background: linear-gradient(0deg,rgba(0, 0, 0, 0) 0%, rgba(76, 158, 84, 0.49) 50%, rgba(0, 0, 0, 0) 100%);
+
+    &:hover {
+      background: linear-gradient(0deg,rgba(0, 0, 0, 0) 0%, rgba(76, 158, 84, 1) 50%, rgba(0, 0, 0, 0) 100%);
+    }
+`
+
+const Arrow = styled.div`
+  display: flex;
+  align-self: center;
+  padding: 10px;
   color: white;
   border: none;
   cursor: pointer;
   z-index: 10;
   font-size: 2rem;
+  
 
-  &.prev {
-    left: 20px;
-  }
-
-  &.next {
-    right: 20px;
+  &:hover {
+    scale: 1.3;
   }
 `;
   
@@ -98,19 +105,8 @@ const Carousel = ({ items, onItemClick }) => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const autoPlayInterval = 3000;
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === items.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? items.length - 1 : prevIndex - 1
-    );
-  };
-
   useEffect(() => {
+    if (!items || items.length === 0) return;
     let interval;
     if (isAutoPlaying) {
         interval = setInterval(() => {
@@ -123,6 +119,22 @@ const Carousel = ({ items, onItemClick }) => {
         }
     };
   }, );
+
+  if (!items || items.length === 0) {
+    return <div style={{color: "white", textAlign: "center", padding: "2rem"}}>No items to display</div>;
+  }
+
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === items.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? items.length - 1 : prevIndex - 1
+    );
+  };
 
     const handleMouseEnter = () => {
         setIsAutoPlaying(false);
@@ -137,8 +149,10 @@ const Carousel = ({ items, onItemClick }) => {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
     >
-      <Arrow className="prev" onClick={prevSlide}><HiChevronLeft/></Arrow>
-      <Arrow className="next" onClick={nextSlide}><HiChevronRight/></Arrow>
+      <ArrowWrapper>
+        <Arrow className="prev" onClick={prevSlide}><HiChevronLeft/></Arrow>
+      </ArrowWrapper>
+      
       
       <CarouselSlide onClick={() => onItemClick(items[currentIndex])}>
         <img 
@@ -150,6 +164,9 @@ const Carousel = ({ items, onItemClick }) => {
           <p>{items[currentIndex].description}</p>
         </CarouselContent>
       </CarouselSlide>
+      <ArrowWrapper>
+        <Arrow className="next" onClick={nextSlide}><HiChevronRight/></Arrow>
+      </ArrowWrapper>
     </CarouselWrapper>
   );
 };

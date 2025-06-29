@@ -12,6 +12,7 @@ const Wrapper = styled.div`
         flex-direction: column;
         align-items: center;
         background-color:rgb(36, 36, 36);
+        padding-top:
     `;
     
     const Title = styled.h1`
@@ -27,28 +28,10 @@ const Wrapper = styled.div`
 
     const CarouselContainer = styled.div`
         width: 100%;
+        display: flex;
+        justify-content: center
         
-        margin-bottom: 2rem;
     `;
-
-
-    const CarouselItems = [
-        {
-            title: "Product 1",
-            description: "bleep bloop",
-            image: "https://picsum.photos/300/200?random=1"
-        },
-        {
-            title: "Product 2",
-            description: "bleep bloop",
-            image: "https://picsum.photos/300/200?random=2"
-        },
-        {
-            title: "Product 3",
-            description: "bleep bloop",
-            image: "https://picsum.photos/300/200?random=3"
-        }
-    ];
 
     const MiddleWrapper = styled.div`
         Width: 70%;
@@ -242,6 +225,7 @@ const FrontPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [trendingGames, setTrendingGames] = useState([]);
+    const [latestGames, setLatestGames] = useState([]);
     
 
 useEffect(() => {
@@ -272,9 +256,29 @@ useEffect(() => {
         }
     };
 
+    const fetchCarouselGames = async () => {
+        try {
+            const carouselGames= await gameApi.getLatestPopularGames();
+            setLatestGames(Array.isArray(carouselGames) ? carouselGames : []);
+        } catch (err) {
+            setError('Failed to fetch carousel games')
+            setLatestGames([]);
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     fetchTrending();
     fetchGenreList();
+    fetchCarouselGames();
 }, []);
+
+const CarouselItems = latestGames.map(game => ({
+    title: game.name,
+    description: game.released ? `Released: ${game.released}` : '',
+    image: game.background_image,
+}));
 
 const ShowcaseItemContent = ({ game }) => (
     <div> 
