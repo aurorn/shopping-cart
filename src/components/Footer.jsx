@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
 const FooterWrapper = styled.div`
-    height: 75px;
     width: 100%;
     color: white;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-content: center;;
     
 `
 
