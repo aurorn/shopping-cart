@@ -2,8 +2,9 @@ import CarouselComponent from "../modules/Carousel";
 import styled from "styled-components";
 import { useState, useEffect } from 'react';
 import { gameApi } from '../services/gameApi';
-import Footer from './Footer';
 import { removeDupes } from "../utilities/removeDupes";
+import { useNavigate } from "react-router-dom";
+import LoadingScreen from "./LoadingScreen";
 
 const Wrapper = styled.div`
         width: 100%;
@@ -11,8 +12,6 @@ const Wrapper = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color:rgb(36, 36, 36);
-        padding-top:
     `;
     
     const Title = styled.h1`
@@ -297,6 +296,14 @@ const ShowcaseGenreItem = ({ genre }) => (
             />
     </div>
 )
+
+const navigate = useNavigate();
+
+const handleGameClick = (game) => {
+  navigate(`/game/${game.id}`);
+};
+
+if (loading) return <LoadingScreen />;
     
     
     return (
@@ -335,7 +342,7 @@ const ShowcaseGenreItem = ({ genre }) => (
                         {loading && <div>Loading...</div>}
                         {error && <div>{error}</div>}
                         {Array.isArray(trendingGames) && trendingGames.map((game) => (
-                    <ShowcaseItem key={game.id}>
+                    <ShowcaseItem key={game.id} onClick={() => handleGameClick(game)}>
                         <ShowcaseItemContent game={game} />
                         <p>{game.name}</p>
                     </ShowcaseItem>
@@ -343,7 +350,6 @@ const ShowcaseGenreItem = ({ genre }) => (
                     </ShowcaseList>
                 </ShowcaseWrapper>
             </MiddleWrapper>
-            <Footer/>
         </Wrapper>
         
     );
