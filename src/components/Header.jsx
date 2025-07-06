@@ -11,7 +11,6 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color:rgb(97, 211, 103);
     `;
     
 const Navbar = styled.div`
@@ -21,31 +20,29 @@ const Navbar = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    background-color:rgb(32, 32, 32);
+    
     transition: all 0.1s ease-in-out;
     
     &.sticky {
         position: fixed;
         top: 0;
-        z-index: 12;
+        z-index: 10;
         padding: 10px 0 10px 0;
-    }
+        background-color:rgba(18, 18, 18, 0.49);
+      }
     `;
 
 const Title = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 96px;
+    position: absolute;
+    left: 0;
+    padding-left: 10px;
     img {
-        width: 160px;
+        width: 100px;
         height: auto;
         margin: 0 20px;
+        filter: invert(1);
     }
     
-
-
     & img:hover {
         scale: 1.1;
         transition: 0.1s ease-in-out;
@@ -75,74 +72,32 @@ const Navbtns = styled.ul`
         }
     }
     `;
-
-const Search = styled.div`
-    display: none;
-    position: absolute;
-    margin-left: 20px;
-    left: 0;
-    input {
-        padding: 5px;
-        border: 1px solid #ccc;
-        margin-right: 10px;
-        position: end;
-    }
-        input:focus {
-            outline: none;
-            border-color: rgb(104, 104, 104);
-        }
-    button {
-        padding: 5px 10px;
-        border: none;
-        
-        background-color: rgb(104, 104, 104);
-        color: white;
-        cursor: pointer;
-        &:hover {
-            background-color: rgb(65, 64, 64);
-        }
-    }
-`;  
-
+    
 const CartBtn = styled.div`
     position: absolute;
     right: 0;
     margin-right: 20px;
+    cursor: pointer;
+
     &.sticky {
 `;
 
-const Header = () => {
+
+const Header = ({ onCartClick }) => {
     const { stickyRef, sticky } = useSticky();
     return (
         <Wrapper>
-            <div className="header">
-                <div className="logo">
-
-                </div>
-
+            <Navbar ref={stickyRef} className={sticky ? "sticky" : ""}>
                 <Title>
                     <img src={title} alt="Aurornis Games Logo" />
                 </Title>
-
-                <div className="cart btn">
-
-                </div>
-            </div>
-            <Navbar ref={stickyRef} className={sticky ? "sticky" : ""}>
                 <Navbtns>
                     <li><Link to="/">Home</Link></li>
-                    <li><Link to="/products">Products</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/contact">Contact</Link></li>
                 </Navbtns>
-                <Search>
-                    <input type="text" placeholder="Search..." />
-                    
-                </Search>
-                <CartBtn>
-                    <Link to="/cart">
-                        <BsCartFill size={36} color="white" />
-                    </Link>
+                <CartBtn onClick={onCartClick}>
+                    <BsCartFill size={36} color="white" />
                 </CartBtn>
             </Navbar>
         </Wrapper>
