@@ -1,13 +1,13 @@
-import { Suspense, lazy, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from './components/Header'
-import Footer from './components/Footer'
-import CartSideBar from './modules/CartSideBar'
-import { theme } from "./Styles/theme";
-import { ThemeProvider } from "styled-components";
+import { Suspense, lazy, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import CartSideBar from './modules/CartSideBar';
+import { theme } from './Styles/theme';
+import { ThemeProvider } from 'styled-components';
 
-const FrontPage = lazy(() => import("./components/FrontPage"));
-const GamePage = lazy(() => import("./components/GamePage"));
+const FrontPage = lazy(() => import('./components/FrontPage'));
+const GamePage = lazy(() => import('./components/GamePage'));
 
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -22,10 +22,11 @@ function App() {
             <Route path="/game/:id" element={<GamePage />} />
           </Routes>
         </Suspense>
-        <CartSideBar open={cartOpen} onClose={() => setCartOpen(false)}>
-          
-        </CartSideBar>
-        <Footer/>
+        <CartSideBar
+          open={cartOpen}
+          onClose={() => setCartOpen(false)}
+        ></CartSideBar>
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );

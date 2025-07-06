@@ -1,9 +1,9 @@
-import styled from "styled-components"
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { gameApi } from "../services/gameApi";
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { gameApi } from '../services/gameApi';
 
-import LoadingScreen from "./LoadingScreen";
+import LoadingScreen from './LoadingScreen';
 
 const MainWrapper = styled.div`
   min-height: 100vh;
@@ -17,7 +17,6 @@ const TopSection = styled.div`
   gap: 32px;
   padding: 40px 5vw 24px 5vw;
   align-items: flex-start;
-
 `;
 
 const StorePageCarousel = styled.div`
@@ -33,7 +32,7 @@ const MainImage = styled.div`
   height: 70%;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   margin-bottom: 18px;
 
   img {
@@ -55,7 +54,7 @@ const SecondaryMedia = styled.div`
     height: 60px;
     object-fit: cover;
     border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     background: #222;
   }
 `;
@@ -112,7 +111,7 @@ const AboutBox = styled.div`
   font-size: 1.08rem;
   line-height: 1.7;
   color: #e3e3e3;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 `;
 
 const BottomSection = styled.div`
@@ -121,68 +120,60 @@ const BottomSection = styled.div`
 `;
 
 const GamePage = () => {
-    const { id } = useParams();
-    const [game, setGame] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const { id } = useParams();
+  const [game, setGame] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchGame = async () => {
-            try {
-                setLoading(true);
-                const data = await gameApi.getGameDetails(id);
-                setGame(data);
-            } catch (err) {
-                setError("Failed to load game details.");
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchGame();
-    }, [id]);
+  useEffect(() => {
+    const fetchGame = async () => {
+      try {
+        setLoading(true);
+        const data = await gameApi.getGameDetails(id);
+        setGame(data);
+      } catch (err) {
+        setError('Failed to load game details.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchGame();
+  }, [id]);
 
-    if (loading) return <LoadingScreen />;
-    if (error) return <div>{error}</div>;
-    if (!game) return null;
+  if (loading) return <LoadingScreen />;
+  if (error) return <div>{error}</div>;
+  if (!game) return null;
 
-    return (
-        <MainWrapper>
-            <TopSection>
-                <StorePageCarousel>
-                    <MainImage>
-                        <img src={game.background_image} alt={game.name} />
-                    </MainImage>
-                    <SecondaryMedia>
-                        {/* Render screenshots if available */}
-                        {game.short_screenshots?.map((shot) => (
-                            <img key={shot.id} src={shot.image} alt="Screenshot" />
-                        ))}
-                    </SecondaryMedia>
-                </StorePageCarousel>
-                <InfoSection>
-                    <TagBox>
-                        {game.genres.map((g) => g.name).join(", ")}
-                    </TagBox>
-                    <StorePages>
-                        {game.stores?.map((store) => (
-                            <div key={store.store.id}>
-                                {store.store.name}
-                            </div>
-                        ))}
-                    </StorePages>
-                </InfoSection>
-            </TopSection>
-            <MiddleSection>
-                <AboutBox>
-                    {game.description_raw}
-                </AboutBox>
-            </MiddleSection>
-            <BottomSection>
-                {/* Add more info as needed */}
-            </BottomSection>
-        </MainWrapper>
-    );
+  return (
+    <MainWrapper>
+      <TopSection>
+        <StorePageCarousel>
+          <MainImage>
+            <img src={game.background_image} alt={game.name} />
+          </MainImage>
+          <SecondaryMedia>
+            {/* Render screenshots if available */}
+            {game.short_screenshots?.map(shot => (
+              <img key={shot.id} src={shot.image} alt="Screenshot" />
+            ))}
+          </SecondaryMedia>
+        </StorePageCarousel>
+        <InfoSection>
+          <TagBox>{game.genres.map(g => g.name).join(', ')}</TagBox>
+          <StorePages>
+            {game.stores?.map(store => (
+              <div key={store.store.id}>{store.store.name}</div>
+            ))}
+          </StorePages>
+        </InfoSection>
+      </TopSection>
+      <MiddleSection>
+        <AboutBox>{game.description_raw}</AboutBox>
+      </MiddleSection>
+      <BottomSection>{/* Add more info as needed */}</BottomSection>
+    </MainWrapper>
+  );
 };
 
 export default GamePage;

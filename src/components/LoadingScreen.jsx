@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledLoadingScreen = styled.div`
   min-height: 100svh;
@@ -8,11 +8,9 @@ const StyledLoadingScreen = styled.div`
   color: #b3e283;
   font-size: 2rem;
   letter-spacing: 0.1em;
-  background-color:rgb(36, 36, 36);
+  background-color: rgb(36, 36, 36);
 `;
 
-const LoadingScreen = () => (
-  <StyledLoadingScreen />
-);
+const LoadingScreen = () => <StyledLoadingScreen />;
 
 export default LoadingScreen;
