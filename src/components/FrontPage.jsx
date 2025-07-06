@@ -1,10 +1,15 @@
-import CarouselComponent from "../modules/Carousel";
+
 import styled from "styled-components";
 import { useState, useEffect } from 'react';
 import { gameApi } from '../services/gameApi';
 import { removeDupes } from "../utilities/removeDupes";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const Wrapper = styled.div`
         width: 100%;
@@ -16,20 +21,21 @@ const Wrapper = styled.div`
     
     const Title = styled.h1`
         font-size: 48px;
-        color: white;
+        color: ${({ theme }) => theme.primaryFontColor};
         
     `;
     
     const Subtitle = styled.h2`
         font-size: 24px;
-        color: #666;
+        color: ${({ theme }) => theme.secondaryTextColor};
     `;
 
     const CarouselContainer = styled.div`
         width: 100%;
         display: flex;
-        justify-content: center
-        
+        justify-content: center;
+        margin-bottom: 100px;
+        margin-top: 100px;
     `;
 
     const MiddleWrapper = styled.div`
@@ -47,7 +53,7 @@ const Wrapper = styled.div`
         height: auto;
         display: flex;
         flex-direction: column;
-        
+        margin-bottom: 100px;
         justify-content: center;
         text-align: left:`
 
@@ -70,6 +76,7 @@ const Wrapper = styled.div`
         border-radius: 5px;
         position: relative;
         overflow: hidden;
+        box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
 
         p {
         opacity: 0;
@@ -135,7 +142,9 @@ const Wrapper = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;`
+        justify-content: center;
+        margin-bottom: 100px;`
+
 
     const ShowcaseList = styled.div`
         width: 100%;
@@ -154,16 +163,20 @@ const Wrapper = styled.div`
         width: 200px;
         height: 200px;
         object-fit: cover;
+        border-radius: 5px;
+        border: none;
+        
         `
     const ShowcaseItem = styled.div`
-        
         display: flex;
         justify-content: center;
         align-items: center;
         background-color: #444;
         color: white;
-        border-radius: 3px;
         border-color: #444;
+        box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        
         
         p {
         opacity: 0;
@@ -182,6 +195,7 @@ const Wrapper = styled.div`
         &:hover {
         transform: scale(1.1);            
         transition: 0.3s ease-in-out;
+        cursor: pointer;
         
             p {
                 opacity: 1;
@@ -203,14 +217,16 @@ const Wrapper = styled.div`
         align-items: center;
         height: 50px;
         width: 100px;
-        background-color: rgb(43, 43, 43);
-        border: 1px solid rgb(0,0,0);
-        color: rgb(197, 197, 197);
+        background-color: ${({ theme}) => theme.accent};
+        Border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        
 
         &:hover {
-            background-color: rgb(95, 95, 95);
-            color: rgb(216, 213, 213);
-            border-color: rgb(255, 255, 255);
+            background-color: ${({ theme}) => theme.accentHover};
+            
+            Border: none;
             cursor: pointer;
         
         }
@@ -308,18 +324,69 @@ if (loading) return <LoadingScreen />;
     
     return (
         <Wrapper>
+            <Title> Welcome to the Aurornis Games!</Title>
+            <Subtitle>This is a shopping cart project made for the Odin Project</Subtitle>
+            <Subtitle>This uses the RAWG api!</Subtitle>
             <CarouselContainer>
-                <CarouselComponent items={CarouselItems} onItemClick={(item) => console.log(item)} />
+                <Swiper
+                    modules={[Navigation, Pagination, Autoplay]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    autoplay={{ delay: 3000, disableOnInteraction: false }}
+                    loop={true}
+                    style={{ width: '80vw', height: '70vh' }}
+                >
+                    {CarouselItems.map((item, idx) => (
+                        <SwiperSlide key={idx}>
+                            <div
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    position: 'relative'
+                                }}
+                                onClick={() => console.log(item)}
+                            >
+                                <img
+                                    src={item.image}
+                                    alt={item.title}
+                                    style={{
+                                        width: '100%',
+                                        height: '70vh',
+                                        objectFit: 'cover',
+                                        borderRadius: '6px',
+                                        boxShadow: '0 4px 24px rgba(0,0,0,0.4)'
+                                    }}
+                                />
+                                <div
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        background: 'rgba(34,34,34,0.62)',
+                                        color: 'white',
+                                        padding: '16px',
+                                        borderBottomLeftRadius: '12px',
+                                        borderBottomRightRadius: '12px'
+                                    }}
+                                >
+                                    <h3 style={{ margin: 0 }}>{item.title}</h3>
+                                    <p style={{ margin: 0 }}>{item.description}</p>
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </CarouselContainer>
-            
-            <Title> This is a future title</Title>
-            <Subtitle>Find something or other here</Subtitle>
-
             <MiddleWrapper>
                 <GenreWrapper>
                     <SectionTopbar>
                         <Title>Popular Genres</Title>
-                        <BrowseButton>Browse More</BrowseButton>
+                        <BrowseButton>Browse</BrowseButton>
                     </SectionTopbar>
                     
                     <GenreList>
@@ -336,7 +403,7 @@ if (loading) return <LoadingScreen />;
                 <ShowcaseWrapper>
                     <SectionTopbar>
                         <Title>New and Trending</Title>
-                        <BrowseButton>Browse More</BrowseButton>
+                        <BrowseButton>Browse</BrowseButton>
                     </SectionTopbar>
                     <ShowcaseList>
                         {loading && <div>Loading...</div>}
