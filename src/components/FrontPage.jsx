@@ -3,12 +3,13 @@ import { useState, useEffect } from 'react';
 import { gameApi } from '../services/gameApi';
 import { removeDupes } from '../utilities/removeDupes';
 import { useNavigate } from 'react-router-dom';
-import LoadingScreen from './LoadingScreen';
+import { RawgBtn, GitBtn } from '../modules/FPButton'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import GameCard from '../modules/GameCard';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
 `;
 
 const Title = styled.h1`
@@ -33,7 +35,7 @@ const CarouselContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 100px;
-  margin-top: 100px;
+  
 `;
 
 const MiddleWrapper = styled.div`
@@ -53,7 +55,7 @@ const GenreWrapper = styled.div`
         flex-direction: column;
         margin-bottom: 100px;
         justify-content: center;
-        text-align: left:`;
+        text-align: left;`;
 
 const GenreList = styled.div`
   width: 100%;
@@ -167,9 +169,11 @@ const ShowcaseImg = styled.img`
 `;
 const ShowcaseItem = styled.div`
         display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        background-color: #444;
+
         color: white;
         border-color: #444;
         box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
@@ -177,12 +181,12 @@ const ShowcaseItem = styled.div`
         
         
         p {
-        opacity: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
         transition: opacity: 0.3;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+        min-width: 200px;
+        max-width: 200px;
         text-align: center;
         background: rgba(0,0,0,0.7);
         padding: 10px 0;
@@ -194,11 +198,7 @@ const ShowcaseItem = styled.div`
         transform: scale(1.1);            
         transition: 0.3s ease-in-out;
         cursor: pointer;
-        
-            p {
-                opacity: 1;
-            }
-
+        }
         
     }`;
 
@@ -222,11 +222,20 @@ const BrowseButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.accentHover};
-
     border: none;
     cursor: pointer;
   }
 `;
+
+const BtnWrapper = styled.div`
+  display: flex;
+  width: 70%;
+  justify-content: space-evenly;
+  flex-direction: row;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  
+`
 
 const FrontPage = () => {
   const [genreList, setGenreList] = useState([]);
@@ -236,39 +245,21 @@ const FrontPage = () => {
   const [latestGames, setLatestGames] = useState([]);
 
   useEffect(() => {
-    const fetchGenreList = async () => {
+    const fetchAll = async () => {
+      setLoading(true);
       try {
-        const genres = await gameApi.getGamesByGenre();
+        const [genres, games, carouselGames] = await Promise.all([
+          gameApi.getGamesByGenre(),
+          gameApi.getNewAndTrendingGames(),
+          gameApi.getLatestPopularGames(),
+        ]);
         setGenreList(Array.isArray(genres) ? genres : []);
-      } catch (err) {
-        setError('Failed to Fetch Genres');
-        setGenreList([]);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchTrending = async () => {
-      try {
-        const games = await gameApi.getNewAndTrendingGames();
-        const uniqueGames = removeDupes(Array.isArray(games) ? games : []);
-        setTrendingGames(uniqueGames);
-      } catch (err) {
-        setError('Failed to Fetch Genres');
-        setGenreList([]);
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchCarouselGames = async () => {
-      try {
-        const carouselGames = await gameApi.getLatestPopularGames();
+        setTrendingGames(removeDupes(Array.isArray(games) ? games : []));
         setLatestGames(Array.isArray(carouselGames) ? carouselGames : []);
       } catch (err) {
-        setError('Failed to fetch carousel games');
+        setError('Failed to fetch data');
+        setGenreList([]);
+        setTrendingGames([]);
         setLatestGames([]);
         console.error(err);
       } finally {
@@ -276,9 +267,7 @@ const FrontPage = () => {
       }
     };
 
-    fetchTrending();
-    fetchGenreList();
-    fetchCarouselGames();
+    fetchAll();
   }, []);
 
   const CarouselItems = latestGames.map(game => ({
@@ -305,15 +294,12 @@ const FrontPage = () => {
     navigate(`/game/${game.id}`);
   };
 
-  if (loading) return <LoadingScreen />;
-
   return (
     <Wrapper>
-      <Title> Welcome to the Aurornis Games!</Title>
-      <Subtitle>
-        This is a shopping cart project made for the Odin Project
-      </Subtitle>
-      <Subtitle>This uses the RAWG api!</Subtitle>
+      <BtnWrapper>
+        <RawgBtn />
+        <GitBtn />
+      </BtnWrapper>
       <CarouselContainer>
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
@@ -394,19 +380,15 @@ const FrontPage = () => {
             <BrowseButton>Browse</BrowseButton>
           </SectionTopbar>
           <ShowcaseList>
-            {loading && <div>Loading...</div>}
-            {error && <div>{error}</div>}
-            {Array.isArray(trendingGames) &&
-              trendingGames.map(game => (
-                <ShowcaseItem
-                  key={game.id}
-                  onClick={() => handleGameClick(game)}
-                >
-                  <ShowcaseItemContent game={game} />
-                  <p>{game.name}</p>
-                </ShowcaseItem>
-              ))}
-          </ShowcaseList>
+  {trendingGames.map(game => (
+    <GameCard
+      key={game.id}
+      game={game}
+      onClick={handleGameClick}
+      
+    />
+  ))}
+</ShowcaseList>
         </ShowcaseWrapper>
       </MiddleWrapper>
     </Wrapper>

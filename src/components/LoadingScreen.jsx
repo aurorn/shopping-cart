@@ -8,7 +8,7 @@ const StyledLoadingScreen = styled.div`
   color: #b3e283;
   font-size: 2rem;
   letter-spacing: 0.1em;
-  background-color: rgb(36, 36, 36);
+  background-color: ${({ theme }) => theme.background};
 `;
 
 const LoadingScreen = () => <StyledLoadingScreen />;

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { gameApi } from '../services/gameApi';
 
-import LoadingScreen from './LoadingScreen';
+
 
 const MainWrapper = styled.div`
   min-height: 100vh;
@@ -141,7 +141,7 @@ const GamePage = () => {
     fetchGame();
   }, [id]);
 
-  if (loading) return <LoadingScreen />;
+  if (loading) return ;
   if (error) return <div>{error}</div>;
   if (!game) return null;
 
