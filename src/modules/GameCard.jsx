@@ -1,5 +1,15 @@
-import styled from "styled-components";
-import { FaWindows, FaPlaystation, FaXbox, FaApple, FaLinux, FaAndroid } from "react-icons/fa";
+import styled, { keyframes } from 'styled-components';
+import {
+  FaWindows,
+  FaPlaystation,
+  FaXbox,
+  FaApple,
+  FaLinux,
+  FaAndroid,
+  FaChevronDown,
+} from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useRef, useEffect } from 'react';
 
 const GameCardWrapper = styled.div`
   width: 200px;
@@ -11,15 +21,11 @@ const GameCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   cursor: pointer;
   position: relative;
-
-  &:hover {
-    transform: scale(1.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    z-index: 10;
-  }
 `;
 
 const GameCardMedia = styled.img`
@@ -27,7 +33,12 @@ const GameCardMedia = styled.img`
   height: 200px;
   object-fit: cover;
   border: none;
-  border-radius: 5px 5px 0 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 1);
+  transition: filter 0.5s;
+
+  &:hover {
+    filter: blur(2px);
+  }
 `;
 
 const GameCardInfo = styled.div`
@@ -35,7 +46,7 @@ const GameCardInfo = styled.div`
   left: 0;
   top: 100%;
   width: initial;
-  min-width: 176px;
+  min-width: 200px;
   background: rgb(24, 24, 24);
   color: #fff;
   display: flex;
@@ -44,52 +55,70 @@ const GameCardInfo = styled.div`
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  padding: 0 12px;
-  pointer-events: none;
-  border-radius: 4px;
-
-  ${GameCardWrapper}:hover & {
-    max-height: 300px;
-    opacity: 1;
-    padding: 16px 12px;
-    pointer-events: auto;
-    z-index: 20;
-  }
+  transition: all 0.2s ease-in-out;
+  line-height: 0;
+  z-index: 21;
+  padding-bottom: 10px;
+  line-height: ${({ $expanded }) => ($expanded ? '1.5' : '0')};
+  max-height: ${({ $expanded }) => ($expanded ? '300px' : '0')};
+  opacity: ${({ $expanded }) => ($expanded ? 1 : 0)};
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+  pointer-events: ${({ $expanded }) => ($expanded ? 'auto' : 'none')};
+  cursor: default;
 `;
 
 const GameCardInfoPlatforms = styled.div`
   display: flex;
   gap: 6px;
-  margin-bottom: 8px;
-  font-size: 1.1em;
+  font-size: 1em;
+  align-content: center;
+  justify-content: center;
+  padding-top: 5px;
 `;
 
 const GameCardTitle = styled.div`
   font-weight: bold;
-  font-size: 1.1em;
-  margin-bottom: 8px;
+  font-size: 1em;
   text-align: center;
+  width: 100%;
+  padding: 5px 20px;
+
+  a {
+    color: ${({ theme }) => theme.primaryFontColor || '#fff'};
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      text-decoration: underline;
+      color: ${({ theme }) => theme.accent || '#00FF85'};
+    }
+  }
 `;
 
 const Divider = styled.div`
-  width: 80%;
+  width: 100%;
   height: 1px;
-  background: #666;
+  background: ${({ theme }) => theme.dividerColor};
   margin: 8px 0;
 `;
 
 const GameCardInfoRelease = styled.div`
-  font-size: 0.95em;
-  color: #b0b0b0;
-  margin-bottom: 4px;
+  font-size: 0.7em;
+  color: ${({ theme }) => theme.secondaryTextColor};
+  padding-left: 12px;
+  padding: 5px 20px 5px 20px;
 `;
 
 const GameCardInfoGenre = styled.div`
-  font-size: 0.95em;
+  display: flex;
+  flex-direction: row;
+  font-size: 0.7em;
   color: #b0b0b0;
   margin-bottom: 8px;
-  width: 140px;
-  
+  padding-left: 12px;
+  width: 200px;
+  padding: 5px 20px 5px 20px;
 `;
 
 const GameCardInfoAddToCart = styled.button`
@@ -97,8 +126,8 @@ const GameCardInfoAddToCart = styled.button`
   color: #181818;
   border: none;
   border-radius: 4px;
-  padding: 8px 18px;
-  font-size: 1em;
+  padding: 5px 20px 5px 20px;
+  font-size: 0.7em;
   font-weight: 600;
   margin-top: 8px;
   cursor: pointer;
@@ -110,61 +139,187 @@ const GameCardInfoAddToCart = styled.button`
 `;
 
 const GameCardInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+`;
+
+const GameCardTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const GameCardButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+const GameCardGenreWrapper = styled.div`
+  display: flex;
+  width: 200px;
+`;
+const GameCardReleaseWrapper = styled.div``;
+const GameCardPlatformWrapper = styled.div``;
+
+const GameCardTopInfo = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 85%;
+  margin: 5px 5px 12px 12px;
+`;
+
+const pulseBounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+`;
+
+const GameCardChevron = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 6px;
+
+  animation: ${pulseBounce} 1.8s ease-in-out infinite;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+
+  ${GameCardWrapper}:hover & {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    ${GameCardWrapper}:hover & {
-        transform: scale(0.8);
-    }
+    opacity: 1;
+  }
+
+  svg {
+    color: ${({ theme }) => theme.primaryFontColor};
+    font-size: 1rem;
+    opacity: 1;
+  }
+`;
+
+const MiniAddToCardBtn = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  background-color: ${({ theme }) => theme.accent};
+  opacity: 0.7;
+  border: none;
+  font-size: 1em;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 1);
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+    background-color: #01a355ff;
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+
 `
 
 const platformIconMap = {
   pc: <FaWindows />,
   playstation5: <FaPlaystation />,
-  xboxone: <FaXbox />,
   xboxseriesx: <FaXbox />,
   mac: <FaApple />,
   linux: <FaLinux />,
   android: <FaAndroid />,
 };
 
-const GameCard = ({ game, onClick, onAddToCart }) => (
-  <GameCardWrapper onClick={() => onClick && onClick(game)}>
-    <GameCardMedia src={game.background_image} alt={game.name} />
-    <GameCardInfo>
-        <GameCardInfoWrapper>
-      <GameCardInfoPlatforms>
-        {game.platforms?.map((p, idx) => {
-          const slug = p.platform?.slug;
-          const icon = platformIconMap[slug];
-          return (
-            <span key={idx} title={slug} style={{ fontSize: "1.3em" }}>
-              {icon}
-            </span>
-          );
-        })}
-      </GameCardInfoPlatforms>
-      <GameCardTitle>{game.name}</GameCardTitle>
-      <Divider />
-      <GameCardInfoRelease>
-        Release: {game.released || "Unknown"}
-      </GameCardInfoRelease>
-      <Divider />
-      <GameCardInfoGenre>
-        Genre: {game.genres?.map(g => g.name).join(", ") || "Unknown"}
-      </GameCardInfoGenre>
-      <GameCardInfoAddToCart
-        onClick={e => {
-          e.stopPropagation();
-          onAddToCart && onAddToCart(game);
-        }}
-      >
-        Add to Cart
-      </GameCardInfoAddToCart>
-      </GameCardInfoWrapper>
-    </GameCardInfo>
-  </GameCardWrapper>
-);
+const GameCard = ({
+  game,
+  expanded,
+  onToggle,
+  onAddToCart,
+  price,
+  setExpandedCardId
+}) => {
+  const cardRef = useRef();
 
-export default GameCard
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (expanded && cardRef.current && !cardRef.current.contains(event.target)) {
+        setExpandedCardId(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [expanded, setExpandedCardId]);
+
+
+  return (
+    <GameCardWrapper ref={cardRef} onClick={() => onToggle(game.id)}>
+      <GameCardMedia src={game.background_image} alt={game.name}>
+      </GameCardMedia>
+      <MiniAddToCardBtn onClick={e => {
+                e.stopPropagation();
+                onAddToCart && onAddToCart();
+              }}>+</MiniAddToCardBtn>
+      <GameCardChevron>
+        <FaChevronDown />
+      </GameCardChevron>
+      <GameCardInfo $expanded={expanded}>
+        <GameCardInfoWrapper>
+          <GameCardPlatformWrapper>
+            <GameCardTopInfo>
+              <GameCardInfoPlatforms>
+                {game.platforms?.map((p, idx) => {
+                  const slug = p.platform?.slug;
+                  const icon = platformIconMap[slug];
+                  return (
+                    <span key={idx} title={slug} style={{ fontSize: '1.2em' }}>
+                      {icon}
+                    </span>
+                  );
+                })}
+              </GameCardInfoPlatforms>
+              <span style={{ fontWeight: 400, color: '#00FF85' }}>
+                ${price}
+              </span>
+            </GameCardTopInfo>
+          </GameCardPlatformWrapper>
+          <GameCardTitleWrapper>
+            <GameCardTitle>
+              <Link
+                to={`/game/${game.id}`}
+                onClick={e => e.stopPropagation()}
+              >
+                {game.name}
+              </Link>
+            </GameCardTitle>
+          </GameCardTitleWrapper>
+          <Divider />
+          <GameCardReleaseWrapper>
+            <GameCardInfoRelease>
+              Release: {game.released || 'Unknown'}
+            </GameCardInfoRelease>
+          </GameCardReleaseWrapper>
+          <Divider />
+          <GameCardGenreWrapper>
+            <GameCardInfoGenre>
+              Genre: {game.genres?.map(g => g.name).join(', ') || 'Unknown'}
+            </GameCardInfoGenre>
+          </GameCardGenreWrapper>
+          <GameCardButtonWrapper>
+          </GameCardButtonWrapper>
+        </GameCardInfoWrapper>
+      </GameCardInfo>
+    </GameCardWrapper>
+  );
+};
+
+export default GameCard;
