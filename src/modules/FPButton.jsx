@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StyledWrapper = styled.div`
   a {
@@ -56,29 +56,33 @@ const StyledWrapper = styled.div`
     text-decoration: none;
     background-color: ${({ theme }) => theme.background};
     border: none;
-  }`;
-
-
+  }
+`;
 
 export const RawgBtn = () => {
-    return (
-        <StyledWrapper>
-            <a href="https://www.rawg.io/apidocs" target="_blank" rel="noopener noreferrer">
-                <span>RAWG</span>
-            </a>
-        </StyledWrapper>
-    )
-}
+  return (
+    <StyledWrapper>
+      <a
+        href="https://www.rawg.io/apidocs"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>RAWG</span>
+      </a>
+    </StyledWrapper>
+  );
+};
 
 export const GitBtn = () => {
-    return (
-        <StyledWrapper>
-            <a href="https://www.github.com/Aurorn" target="_blank" rel="noopener noreferrer">
-                <span>Github</span>
-            </a>
-        </StyledWrapper>
-    )
-}
-
-
-
+  return (
+    <StyledWrapper>
+      <a
+        href="https://www.github.com/Aurorn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Github</span>
+      </a>
+    </StyledWrapper>
+  );
+};
