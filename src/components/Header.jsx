@@ -3,6 +3,8 @@ import useSticky from '../modules/UseSticky';
 import styled from 'styled-components';
 import { BsCartFill } from 'react-icons/bs';
 import title from '../assets/Aurornisgames.png';
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -73,16 +75,33 @@ const Navbtns = styled.ul`
 `;
 
 const CartBtn = styled.div`
-    position: absolute;
-    right: 0;
-    margin-right: 20px;
-    cursor: pointer;
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  cursor: pointer;
 
-    &.sticky {
+  .cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
 `;
 
 const Header = ({ onCartClick }) => {
   const { stickyRef, sticky } = useSticky();
+  const { cartItems } = useContext(CartContext);
+  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   return (
     <Wrapper>
       <Navbar ref={stickyRef} className={sticky ? 'sticky' : ''}>
@@ -102,6 +121,7 @@ const Header = ({ onCartClick }) => {
         </Navbtns>
         <CartBtn onClick={onCartClick}>
           <BsCartFill size={36} color="white" />
+          {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
         </CartBtn>
       </Navbar>
     </Wrapper>
