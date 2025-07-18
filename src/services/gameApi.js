@@ -37,7 +37,7 @@ export const gameApi = {
   async getLatestPopularGames() {
     try {
       const response = await fetch(
-        `${BASE_URL}/games/lists/main?key=${API_KEY}&discover=true&ordering=-added&page_size=4`,
+        `${BASE_URL}/games/lists/main?key=${API_KEY}&discover=true&ordering=-added&page_size=8`,
       );
       if (!response.ok) {
         throw new Error('Network Response Error');
