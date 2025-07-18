@@ -182,7 +182,7 @@ const FrontPage = () => {
         <GitBtn />
       </BtnWrapper>
       <CarouselContainer>
-        {latestGames.length > 1 && (
+        {/*Swiper only renders after api data is loaded or I get loop errors */}{latestGames.length > 1 && (
           <Swiper
             key={latestGames.length}
             modules={[Navigation, Pagination, Autoplay]}
