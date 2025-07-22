@@ -106,12 +106,16 @@ const BrowseButton = styled.button`
   background-color: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 1em;
 
   &:hover {
     background-color: ${({ theme }) => theme.accentHover};
     border: none;
     cursor: pointer;
+  }
+
+  & p {
+    font-family: 'Roboto';
   }
 `;
 
@@ -234,7 +238,7 @@ const FrontPage = () => {
                     }}
                   >
                     <h3 style={{ margin: 0 }}>{game.name}</h3>
-                    <p style={{ margin: 0 }}>
+                    <p style={{ margin: 0,  fontFamily: 'Roboto'}}>
                       {game.released ? `Releases: ${game.released}` : ''}
                     </p>
                   </div>
@@ -248,7 +252,7 @@ const FrontPage = () => {
         <GenreWrapper>
           <SectionTopbar>
             <Title>Popular Genres</Title>
-            <BrowseButton>Browse</BrowseButton>
+            <BrowseButton><p>Browse</p></BrowseButton>
           </SectionTopbar>
           <GenreList>
             <GenreCard />
@@ -257,7 +261,7 @@ const FrontPage = () => {
         <ShowcaseWrapper>
           <SectionTopbar>
             <Title>New and Trending</Title>
-            <BrowseButton>Browse</BrowseButton>
+            <BrowseButton><p>Browse</p></BrowseButton>
           </SectionTopbar>
           <ShowcaseList>
             {trendingGames.map(game => {
