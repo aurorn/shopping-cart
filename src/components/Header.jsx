@@ -49,6 +49,12 @@ const Title = styled.div`
     scale: 1.1;
     transition: 0.1s ease-in-out;
   }
+
+  @media (max-width: 768px) {
+    img {
+      width: 12svw;
+      };
+   }
 `;
 
 const Navbtns = styled.ul`
@@ -59,12 +65,15 @@ const Navbtns = styled.ul`
   height: auto;
   margin: 0;
   padding: 20px;
+
   li {
     margin: 0 20px;
+
     a {
       color: white;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 1em;
+
       &:hover {
         color: #ccc;
         text-decoration: underline;
@@ -72,6 +81,7 @@ const Navbtns = styled.ul`
       }
     }
   }
+
 `;
 
 const CartBtn = styled.div`
@@ -96,6 +106,13 @@ const CartBtn = styled.div`
     justify-content: center;
     z-index: 1;
   }
+
+  @media (max-width: 768px) {
+    .cart-badge {
+      width: 14px;
+      height: 14px;
+    }
+   }
 `;
 
 const Header = ({ onCartClick }) => {
