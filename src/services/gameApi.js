@@ -63,4 +63,21 @@ export const gameApi = {
       throw error;
     }
   },
+
+  async getGameScreenshots(id) {
+    try {
+      const response = await fetch(
+        `${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error('Network Response Error');
+      }
+      const data = await response.json();
+      return data.results;
+    } catch (error) {
+      console.error('Error fetching game screenshots:', error);
+      throw error;
+    }
+  },
+
 };
