@@ -10,11 +10,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const MainWrapper = styled.div`
-  min-height: 100vh;
   width: 100%;
   padding-top: 20px;
-
-  
 `;
 
 const TopSectionWrapper = styled.div`
