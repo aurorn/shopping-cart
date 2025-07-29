@@ -5,6 +5,7 @@ import { BsCartFill } from 'react-icons/bs';
 import title from '../assets/Aurornisgames.png';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -32,6 +33,10 @@ const Navbar = styled.div`
     padding: 10px 0 10px 0;
     background-color: rgba(18, 18, 18, 0.49);
   }
+
+  @media (max-width: 768px) {
+    height: 5svh;
+  }
 `;
 
 const Title = styled.div`
@@ -51,10 +56,16 @@ const Title = styled.div`
   }
 
   @media (max-width: 768px) {
+    position: static;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    
     img {
-      width: 12svw;
-      };
-   }
+      width: 16svw;
+      margin: 0;
+    }
+}
 `;
 
 const Navbtns = styled.ul`
@@ -82,6 +93,9 @@ const Navbtns = styled.ul`
     }
   }
 
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const CartBtn = styled.div`
@@ -115,15 +129,88 @@ const CartBtn = styled.div`
    }
 `;
 
+const LogoWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+`;
+
+const DropdownMenu = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(${props => props.$isOpen ? '0' : '-20px'});
+    background: ${({ theme }) => theme.background};
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    opacity: ${props => props.$isOpen ? '1' : '0'};
+    pointer-events: ${props => props.$isOpen ? 'all' : 'none'};
+    transition: all 0.3s ease-in-out;
+    z-index: 22;
+    border-radius: 4px;
+    list-style: none;
+    
+    }
+  }
+`;
+
+const DropdownItem = styled.div`
+  padding: 12px 16px;
+  color: ${({ theme }) => theme.primaryFontColor};
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 0.9em;
+
+  a {
+    color: white;
+      text-decoration: none;
+      font-size: 1em;
+  }
+
+  &:hover {
+    background: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.background};
+    
+  }
+`;
+
 const Header = ({ onCartClick }) => {
   const { stickyRef, sticky } = useSticky();
   const { cartItems } = useContext(CartContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   return (
     <Wrapper>
       <Navbar ref={stickyRef} className={sticky ? 'sticky' : ''}>
         <Title>
-          <img src={title} alt="Aurornis Games Logo" />
+          <LogoWrapper 
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
+          >
+            <img src={title} alt="Aurornis Games Logo" />
+            <DropdownMenu $isOpen={isDropdownOpen}>
+              <Link to="/" style={{textDecoration: 'none'}}>
+              <DropdownItem>Home</DropdownItem>
+            </Link>
+            <Link to="/about" style={{textDecoration: 'none'}}>
+              <DropdownItem>About</DropdownItem>
+            </Link>
+            <Link to="/contact" style={{textDecoration: 'none'}}>
+              <DropdownItem>Contact</DropdownItem>
+            </Link>
+              
+            </DropdownMenu>
+          </LogoWrapper>
         </Title>
         <Navbtns>
           <li>
