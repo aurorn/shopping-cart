@@ -14,6 +14,7 @@ import GenreCard from '../modules/GenreCard';
 import PriceGen from '../utilities/PriceCalc';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
+import Modal from '../modules/Modal';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -24,8 +25,13 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 3em;
   color: ${({ theme }) => theme.primaryFontColor};
+
+  @media (max-width: 768px) {
+    font-size: 2em;
+    text-align: center;
+  }
 `;
 
 const Subtitle = styled.h2`
@@ -67,6 +73,8 @@ const GenreList = styled.div`
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  row-gap: 40px;
+  column-gap: 100px;
 `;
 
 const ShowcaseWrapper = styled.div`
@@ -95,6 +103,13 @@ const SectionTopbar = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  @media (max-width: 768px) {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  }
 `;
 
 const BrowseButton = styled.button`
@@ -132,6 +147,7 @@ const FrontPage = () => {
   const [trendingGames, setTrendingGames] = useState([]);
   const [latestGames, setLatestGames] = useState([]);
   const { addToCart } = useContext(CartContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [expandedCardId, setExpandedCardId] = useState(null);
 
@@ -178,6 +194,11 @@ const FrontPage = () => {
       image: game.background_image,
     });
   };
+
+  const handleBtnClick = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  }
 
   return (
     <Wrapper>
@@ -252,7 +273,7 @@ const FrontPage = () => {
         <GenreWrapper>
           <SectionTopbar>
             <Title>Popular Genres</Title>
-            <BrowseButton><p>Browse</p></BrowseButton>
+            <BrowseButton onClick={handleBtnClick}><p>Browse</p></BrowseButton>
           </SectionTopbar>
           <GenreList>
             <GenreCard />
@@ -261,7 +282,7 @@ const FrontPage = () => {
         <ShowcaseWrapper>
           <SectionTopbar>
             <Title>New and Trending</Title>
-            <BrowseButton><p>Browse</p></BrowseButton>
+            <BrowseButton onClick={handleBtnClick}><p>Browse</p></BrowseButton>
           </SectionTopbar>
           <ShowcaseList>
             {trendingGames.map(game => {
@@ -281,6 +302,9 @@ const FrontPage = () => {
           </ShowcaseList>
         </ShowcaseWrapper>
       </MiddleWrapper>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <p>This is a dummy link, this link does nothing. For now...</p>
+      </Modal>
     </Wrapper>
   );
 };
