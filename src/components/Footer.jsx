@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Modal from '../modules/Modal';
 
 const FooterWrapper = styled.div`
-  width: 90%;
+  width: 97%;
   color: white;
   background: ${({ theme }) => theme.background};
   padding: 40px 20px;
@@ -57,7 +57,7 @@ const Signature = styled.p`
 const Footer = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleLinkClick = (e) => {
+  const handleLinkClick = e => {
     e.preventDefault();
     setIsModalOpen(true);
   };
@@ -67,34 +67,66 @@ const Footer = () => {
       <FooterContent>
         <FooterSection>
           <FooterTitle>About Us</FooterTitle>
-          <FooterLink href="#" onClick={handleLinkClick}>About GameStore</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Careers</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Press Center</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Our Blog</FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            About GameStore
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Careers
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Press Center
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Our Blog
+          </FooterLink>
         </FooterSection>
 
         <FooterSection>
           <FooterTitle>Support</FooterTitle>
-          <FooterLink href="#" onClick={handleLinkClick}>Help Center</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Safety Center</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Community Guidelines</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Contact Us</FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Help Center
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Safety Center
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Community Guidelines
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Contact Us
+          </FooterLink>
         </FooterSection>
 
         <FooterSection>
           <FooterTitle>Legal</FooterTitle>
-          <FooterLink href="#" onClick={handleLinkClick}>Terms of Service</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Privacy Policy</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Cookie Settings</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Copyright Policy</FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Terms of Service
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Privacy Policy
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Cookie Settings
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Copyright Policy
+          </FooterLink>
         </FooterSection>
 
         <FooterSection>
           <FooterTitle>Follow Us</FooterTitle>
-          <FooterLink href="#" onClick={handleLinkClick}>Twitter</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Facebook</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Instagram</FooterLink>
-          <FooterLink href="#" onClick={handleLinkClick}>Discord</FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Twitter
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Facebook
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Instagram
+          </FooterLink>
+          <FooterLink href="#" onClick={handleLinkClick}>
+            Discord
+          </FooterLink>
         </FooterSection>
       </FooterContent>
 

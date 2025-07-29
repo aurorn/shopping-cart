@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import CartSideBar from './modules/CartSideBar';
 import { theme } from './Styles/theme';
 import { ThemeProvider } from 'styled-components';
-import { CartProvider } from './context/CartProvider'
+import { CartProvider } from './context/CartProvider';
 
 const FrontPage = lazy(() => import('./components/FrontPage'));
 const GamePage = lazy(() => import('./components/GamePage'));
@@ -17,11 +17,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <CartProvider>
+        <CartProvider>
           <Header onCartClick={() => setCartOpen(true)} />
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<FrontPage setCart={setCart} cart={cart} />} />
+              <Route
+                path="/"
+                element={<FrontPage setCart={setCart} cart={cart} />}
+              />
               <Route path="/game/:id" element={<GamePage />} />
             </Routes>
           </Suspense>

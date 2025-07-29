@@ -1,3 +1,3 @@
 export default function PriceGen() {
-    return (50);
+  return 50;
 }

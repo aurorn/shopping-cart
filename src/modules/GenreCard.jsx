@@ -12,13 +12,15 @@ const GenreCardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
   cursor: pointer;
   position: relative;
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 32px rgba(0,0,0,1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 1);
     z-index: 10;
   }
 `;
@@ -99,7 +101,6 @@ const GameCount = styled.div`
   padding: 12px 20px;
 `;
 
-
 const GenreCard = () => {
   const [genres, setGenres] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -134,9 +135,7 @@ const GenreCard = () => {
             <GenreCardTitle>{genre.name}</GenreCardTitle>
           </GenreCardTitleWrapper>
           <GenreCardInfo>
-            <GameCount>
-              Games count: {genre.games_count}
-            </GameCount>
+            <GameCount>Games count: {genre.games_count}</GameCount>
           </GenreCardInfo>
         </GenreCardWrapper>
       ))}

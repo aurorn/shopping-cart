@@ -67,7 +67,7 @@ export const gameApi = {
   async getGameScreenshots(id) {
     try {
       const response = await fetch(
-        `${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`
+        `${BASE_URL}/games/${id}/screenshots?key=${API_KEY}`,
       );
       if (!response.ok) {
         throw new Error('Network Response Error');
@@ -79,5 +79,4 @@ export const gameApi = {
       throw error;
     }
   },
-
 };

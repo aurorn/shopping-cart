@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import useSticky from '../modules/UseSticky';
 import styled from 'styled-components';
 import { BsCartFill } from 'react-icons/bs';
+import { RxHamburgerMenu } from 'react-icons/rx';
 import title from '../assets/Aurornisgames.png';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
@@ -56,16 +57,11 @@ const Title = styled.div`
   }
 
   @media (max-width: 768px) {
-    position: static;
-    display: flex;
-    justify-content: center;
-    padding: 0;
-    
     img {
       width: 16svw;
       margin: 0;
     }
-}
+  }
 `;
 
 const Navbtns = styled.ul`
@@ -126,19 +122,18 @@ const CartBtn = styled.div`
       width: 14px;
       height: 14px;
     }
-   }
+  }
 `;
 
 const LogoWrapper = styled.div`
   position: relative;
-  display: inline-block;
+  display: none;
 
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-
 `;
 
 const DropdownMenu = styled.div`
@@ -149,12 +144,12 @@ const DropdownMenu = styled.div`
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(${props => props.$isOpen ? '0' : '-20px'});
+    transform: translateX(-50%) translateY(${props => (props.$isOpen ? '0' : '-20px')});
     background: ${({ theme }) => theme.background};
     min-width: 200px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    opacity: ${props => props.$isOpen ? '1' : '0'};
-    pointer-events: ${props => props.$isOpen ? 'all' : 'none'};
+    opacity: ${props => (props.$isOpen ? '1' : '0')};
+    pointer-events: ${props => (props.$isOpen ? 'all' : 'none')};
     transition: all 0.3s ease-in-out;
     z-index: 22;
     border-radius: 4px;
@@ -173,14 +168,13 @@ const DropdownItem = styled.div`
 
   a {
     color: white;
-      text-decoration: none;
-      font-size: 1em;
+    text-decoration: none;
+    font-size: 1em;
   }
 
   &:hover {
     background: ${({ theme }) => theme.accent};
     color: ${({ theme }) => theme.background};
-    
   }
 `;
 
@@ -193,25 +187,28 @@ const Header = ({ onCartClick }) => {
     <Wrapper>
       <Navbar ref={stickyRef} className={sticky ? 'sticky' : ''}>
         <Title>
-          <LogoWrapper 
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
-          >
+          <Link to="/">
             <img src={title} alt="Aurornis Games Logo" />
-            <DropdownMenu $isOpen={isDropdownOpen}>
-              <Link to="/" style={{textDecoration: 'none'}}>
-              <DropdownItem>Home</DropdownItem>
-            </Link>
-            <Link to="/about" style={{textDecoration: 'none'}}>
-              <DropdownItem>About</DropdownItem>
-            </Link>
-            <Link to="/contact" style={{textDecoration: 'none'}}>
-              <DropdownItem>Contact</DropdownItem>
-            </Link>
-              
-            </DropdownMenu>
-          </LogoWrapper>
+          </Link>
         </Title>
+        <LogoWrapper>
+          <RxHamburgerMenu
+            size={24}
+            color="white"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          />
+          <DropdownMenu $isOpen={isDropdownOpen}>
+            <DropdownItem>
+              <Link to="/">Home</Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link to="/about">About</Link>
+            </DropdownItem>
+            <DropdownItem>
+              <Link to="/contact">Contact</Link>
+            </DropdownItem>
+          </DropdownMenu>
+        </LogoWrapper>
         <Navbtns>
           <li>
             <Link to="/">Home</Link>

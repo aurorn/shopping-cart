@@ -105,10 +105,10 @@ const SectionTopbar = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
   }
 `;
 
@@ -163,7 +163,9 @@ const FrontPage = () => {
           gameApi.getLatestPopularGames(),
         ]);
         setTrendingGames(Array.isArray(games) ? removeDupes(games) : []);
-        setLatestGames(Array.isArray(carouselGames) ? removeDupes(carouselGames) : []);
+        setLatestGames(
+          Array.isArray(carouselGames) ? removeDupes(carouselGames) : [],
+        );
       } catch (err) {
         console.error('Failed to fetch data', err);
         setTrendingGames([]);
@@ -173,12 +175,6 @@ const FrontPage = () => {
 
     fetchAll();
   }, []);
-
-  const CarouselItems = latestGames.map(game => ({
-    title: game.name,
-    description: game.released ? `Releases: ${game.released}` : '',
-    image: game.background_image,
-  }));
 
   const navigate = useNavigate();
 
@@ -195,10 +191,10 @@ const FrontPage = () => {
     });
   };
 
-  const handleBtnClick = (e) => {
+  const handleBtnClick = e => {
     e.preventDefault();
     setIsModalOpen(true);
-  }
+  };
 
   return (
     <Wrapper>
@@ -207,7 +203,8 @@ const FrontPage = () => {
         <GitBtn />
       </BtnWrapper>
       <CarouselContainer>
-        {/*Swiper only renders after api data is loaded or I get loop errors */}{latestGames.length > 1 && (
+        {/*Swiper only renders after api data is loaded or I get loop errors */}
+        {latestGames.length > 1 && (
           <Swiper
             key={latestGames.length}
             modules={[Navigation, Pagination, Autoplay]}
@@ -221,7 +218,7 @@ const FrontPage = () => {
               boxShadow: '0 4px 24px rgba(0,0,0,1)',
             }}
           >
-            {latestGames.map((game) => (
+            {latestGames.map(game => (
               <SwiperSlide key={game.id}>
                 <div
                   style={{
@@ -259,7 +256,7 @@ const FrontPage = () => {
                     }}
                   >
                     <h3 style={{ margin: 0 }}>{game.name}</h3>
-                    <p style={{ margin: 0,  fontFamily: 'Roboto'}}>
+                    <p style={{ margin: 0, fontFamily: 'Roboto' }}>
                       {game.released ? `Releases: ${game.released}` : ''}
                     </p>
                   </div>
@@ -273,7 +270,9 @@ const FrontPage = () => {
         <GenreWrapper>
           <SectionTopbar>
             <Title>Popular Genres</Title>
-            <BrowseButton onClick={handleBtnClick}><p>Browse</p></BrowseButton>
+            <BrowseButton onClick={handleBtnClick}>
+              <p>Browse</p>
+            </BrowseButton>
           </SectionTopbar>
           <GenreList>
             <GenreCard />
@@ -282,7 +281,9 @@ const FrontPage = () => {
         <ShowcaseWrapper>
           <SectionTopbar>
             <Title>New and Trending</Title>
-            <BrowseButton onClick={handleBtnClick}><p>Browse</p></BrowseButton>
+            <BrowseButton onClick={handleBtnClick}>
+              <p>Browse</p>
+            </BrowseButton>
           </SectionTopbar>
           <ShowcaseList>
             {trendingGames.map(game => {

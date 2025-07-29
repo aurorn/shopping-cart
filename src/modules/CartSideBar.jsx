@@ -30,7 +30,6 @@ const CloseCartBarBtn = styled.button`
 `;
 
 const CheckoutBtn = styled.button`
-  
   margin-bottom: 100px;
   display: flex;
   justify-content: center;
@@ -81,33 +80,32 @@ const CartItemsBox = styled.div`
 `;
 
 const CartItemWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    
-`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+`;
 const CartItemImg = styled.img`
-   min-width: 86px;
-   height: 64px;
-   border-radius: 4px;
-   object-fit:cover;
-`
+  min-width: 86px;
+  height: 64px;
+  border-radius: 4px;
+  object-fit: cover;
+`;
 const CartItemText = styled.div`
-    align-items: center;
-    display: flex;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-`
+  align-items: center;
+  display: flex;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
 
 const CartItemTextWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+`;
 
 const CartItemDivider = styled.div`
   width: 90%;
@@ -131,17 +129,15 @@ const CartItemDelBtn = styled.div`
   border-radius: 4px;
 
   &:hover {
-    background: ${({theme}) => theme.accent};
-    color:rgb(0, 0, 0);
-    
+    background: ${({ theme }) => theme.accent};
+    color: rgb(0, 0, 0);
   }
-
-`
+`;
 const CartBotRowWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-`
+`;
 
 const CartItemTotalPrice = styled.div`
   font-size: 18px;
@@ -151,7 +147,6 @@ const CartItemTotalPrice = styled.div`
 `;
 
 const ClearCart = styled.button`
-  
   margin-bottom: 100px;
   display: flex;
   justify-content: center;
@@ -172,7 +167,7 @@ const ClearCart = styled.button`
   &:active {
     transform: scale(1);
   }
-`
+`;
 
 const BotBtnWrapper = styled.div`
   position: absolute;
@@ -182,11 +177,11 @@ const BotBtnWrapper = styled.div`
   justify-content: space-evenly;
   align-items: flex-end;
   width: 100%;
-`
+`;
 
-
-const CartSideBar = ({ open, onClose}) => {
-  const { cartItems, getCartTotal, removeFromCart, clearCart } = useContext(CartContext);
+const CartSideBar = ({ open, onClose }) => {
+  const { cartItems, getCartTotal, removeFromCart, clearCart } =
+    useContext(CartContext);
 
   const totalPrice = getCartTotal().toFixed(2);
 
@@ -230,6 +225,5 @@ const CartSideBar = ({ open, onClose}) => {
     </>
   );
 };
-
 
 export default CartSideBar;

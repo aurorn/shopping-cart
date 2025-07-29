@@ -68,7 +68,7 @@ const GameCardInfo = styled.div`
   overflow: hidden;
   pointer-events: ${({ $expanded }) => ($expanded ? 'auto' : 'none')};
   cursor: default;
-  Font-Family: 'Roboto';
+  font-family: 'Roboto';
 `;
 
 const GameCardInfoPlatforms = styled.div`
@@ -146,7 +146,7 @@ const GameCardTitleWrapper = styled.div`
   align-self: center;
   height: 100%;
   width: 100%;
-  transition: all 0.3s ;
+  transition: all 0.3s;
 
   ${GameCardWrapper}:hover & {
     backdrop-filter: blur(3px);
@@ -242,36 +242,37 @@ const PriceSlideBox = styled.div`
   justify-content: center;
   transform: translateX(100%);
   transition: all 0.2s ease-in-out;
-  
-  ${MiniAddToCartBtn}:hover + &{
-    opacity: 1; 
-    transform: translateX(0);
 
+  ${MiniAddToCartBtn}:hover + & {
+    opacity: 1;
+    transform: translateX(0);
   }
 `;
 
- const AddedToCartBox = styled.div`
-    position: absolute;
-    top: 30px;
-    left: 100%;
-    height: 30px;
-    width: 60px;
-    background-color: ${({ theme }) => theme.accent};
-    opacity: 0;
-    border: none;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-100%);
-    transition: all 0.2s ease-in-out;
-    color: ${({ theme }) => theme.background};
-    
-    ${({ $isAdded }) => $isAdded && `
+const AddedToCartBox = styled.div`
+  position: absolute;
+  top: 30px;
+  left: 100%;
+  height: 30px;
+  width: 60px;
+  background-color: ${({ theme }) => theme.accent};
+  opacity: 0;
+  border: none;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%);
+  transition: all 0.2s ease-in-out;
+  color: ${({ theme }) => theme.background};
+
+  ${({ $isAdded }) =>
+    $isAdded &&
+    `
       opacity: 0.7;
       transform: translateY(0);
     `}
-  `;
+`;
 
 const platformIconMap = {
   pc: <FaWindows />,

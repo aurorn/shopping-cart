@@ -24,21 +24,19 @@ const TopSectionWrapper = styled.div`
   gap: 20px;
 
   @media (max-width: 768px) {
-   flex-direction: column;
-   align-items: center;
-
-   }
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StorePageCarousel = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
 
   @media (max-width: 768px) {
-      width: 90svw;
-   }
+    width: 90svw;
+  }
 `;
 
 const MediaWrapper = styled.div`
@@ -51,7 +49,7 @@ const MediaWrapper = styled.div`
 
   @media (max-width: 768px) {
     width: 90svw;
-   }
+  }
 `;
 
 const MainImage = styled.img`
@@ -73,7 +71,7 @@ const MainImage = styled.img`
     width: 90svw;
     img {
     }
-   }
+  }
 `;
 
 const SecondaryMedia = styled.div`
@@ -100,10 +98,10 @@ const SecondaryMedia = styled.div`
     background: ${({ theme }) => theme.accent};
     border-radius: 4px;
   }
-    @media (max-width: 768px) {
-      width: 90svw;
-      overflow-x: auto;
-   }
+  @media (max-width: 768px) {
+    width: 90svw;
+    overflow-x: auto;
+  }
 `;
 
 const ScreenshotModal = styled.div`
@@ -160,8 +158,6 @@ const InfoSection = styled.div`
   width: auto;
   gap: 18px;
   height: 100%;
-
-
 `;
 
 const GameName = styled.h1`
@@ -173,11 +169,11 @@ const GameName = styled.h1`
   @media (max-width: 768px) {
     font-size: 1.3em;
     text-align: center;
-   }
+  }
 `;
 
 const InfoBox = styled.div`
-  display: flex;      
+  display: flex;
   flex-direction: column;
   gap: 6px;
   font-size: 0.98rem;
@@ -194,7 +190,7 @@ const InfoBox = styled.div`
   @media (max-width: 768px) {
     justify-content: center;
     align-items: center;
-   }
+  }
 `;
 
 const MiddleSection = styled.div`
@@ -213,7 +209,7 @@ const ReadMoreButton = styled.button`
   font-size: 1rem;
   padding: 8px 0;
   font-weight: 500;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -237,7 +233,7 @@ const AboutBox = styled.div`
     font-size: 0.9rem;
     align-items: center;
     justify-content: center;
-   }
+  }
 `;
 
 const RatingItem = styled.span`
@@ -262,8 +258,6 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.accent};
-
-  
 `;
 
 const AdditionalInfo = styled.div`
@@ -278,9 +272,8 @@ const AdditionalInfo = styled.div`
     align-items: center;
     justify-content: start;
     gap: 5px;
-   }
-  
-`
+  }
+`;
 
 const truncateText = (text, wordLimit) => {
   const words = text.split(' ');
@@ -289,7 +282,6 @@ const truncateText = (text, wordLimit) => {
   }
   return text;
 };
-
 
 const GamePage = () => {
   const { id } = useParams();
@@ -416,14 +408,16 @@ const GamePage = () => {
       </TopSectionWrapper>
 
       <MiddleSection>
-        <AboutBox>{isExpanded 
-            ? game.description_raw 
+        <AboutBox>
+          {isExpanded
+            ? game.description_raw
             : truncateText(game.description_raw, WORD_LIMIT)}
           {game.description_raw.split(' ').length > WORD_LIMIT && (
             <ReadMoreButton onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? '' : ' Read More'}
             </ReadMoreButton>
-          )}</AboutBox>
+          )}
+        </AboutBox>
       </MiddleSection>
     </MainWrapper>
   );

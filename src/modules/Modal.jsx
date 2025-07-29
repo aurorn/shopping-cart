@@ -33,7 +33,7 @@ const CloseButton = styled.button`
   font-size: 20px;
   cursor: pointer;
   color: ${({ theme }) => theme.primaryFontColor};
-  
+
   &:hover {
     color: ${({ theme }) => theme.accent};
   }
